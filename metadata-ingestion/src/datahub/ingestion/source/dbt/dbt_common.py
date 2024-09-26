@@ -1689,10 +1689,12 @@ class DBTSourceBase(StatefulIngestionSourceBase):
         # add tags aspects
         meta_tags_aspect = meta_aspects.get(Constants.ADD_TAG_OPERATION)
         aggregated_tags = self._aggregate_tags(node, meta_tags_aspect)
-        if aggregated_tags:
-            aspects.append(
-                mce_builder.make_global_tag_aspect_with_tag_list(aggregated_tags)
-            )
+
+        aspects.append(
+            mce_builder.make_global_tag_aspect_with_tag_list(aggregated_tags) if aggregated_tags
+            else GlobalTagsClass(tags=[])
+        )
+
 
         # add meta term aspects
         if (
